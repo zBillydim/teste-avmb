@@ -1,0 +1,30 @@
+services:
+  frontend-avmb:
+    container_name: frontend-avmb
+    build:
+      context: ./avmb
+    ports:
+      - 9000:9000
+    env_file:
+      - ./dotenv_files/.env
+    depends_on:
+      - backend-avmb
+  backend-avmb:
+    container_name: backend-avmb
+    build:
+      context: ./backend-avmb
+    ports:
+      - 3000:3000
+    env_file:
+      - ./dotenv_files/.env
+    depends_on:
+      - psql-avmb
+  psql-avmb:
+    container_name: psql-avmb
+    image: postgres:13-alpine
+    volumes:
+      - ./data/postgres/data:/var/lib/postgresql/data/
+    ports:
+      - 5400:5432
+    env_file:
+      - ./dotenv_files/.env
